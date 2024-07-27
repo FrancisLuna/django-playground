@@ -1,0 +1,13 @@
+{% extends 'mi_app/base.html' %}
+
+{% load static %}
+
+{% block title %} Buscar libro por ISBN {% endblock title %}
+
+{% block main %}
+    <!-- action: representa la url a la que nos va a re-dirigir. Tiene prioridad
+    por sobre la redirección que podamos colocar en views.py -->
+    <ul>
+        <li> {{ libro.isbn }} -{{ libro.nombre }} - {{ libro.autor }} - ${{ libro.precio }} </li>
+    </ul>
+{% endblock main %}

@@ -1,0 +1,16 @@
+{% extends 'mi_app/base.html' %}
+
+{% load static %}
+
+{% block title %} Buscar Libro por ISBN {% endblock title %}
+
+{% block main %}
+    <form action="" method="POST">
+        {% csrf_token %}
+        <table>
+            {{ buscar_libro_form.as_table }}
+        </table>
+        <input type="submit" value="Enviar">
+
+    </form>
+{% endblock main %}

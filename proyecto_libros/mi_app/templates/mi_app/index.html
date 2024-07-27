@@ -1,0 +1,56 @@
+{% extends 'mi_app/base.html' %}
+
+{% load static %}
+
+{% block title %} Inicio {% endblock title %}
+
+{% block main %}
+    <!-- Content section 1-->
+    <section id="scroll">
+        <div class="container px-5">
+            <div class="row gx-5 align-items-center">
+                <div class="col-lg-6 order-lg-2">
+                    <div class="p-5"><img class="img-fluid rounded-circle" src="{% static 'mi_app/assets/img/01.jpg' %}" alt="..." /></div>
+                </div>
+                <div class="col-lg-6 order-lg-1">
+                    <div class="p-5">
+                        <h2 class="display-4">Para los lectores...</h2>
+                        <p>Los mejores libros que vas a encontar en tu vida, en el mundo, pero que digo,... ni Alejandria maneja la calidad, cantidad, y magnificencia que tenemos en esta tienda</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+    <!-- Content section 2-->
+    <section>
+        <div class="container px-5">
+            <div class="row gx-5 align-items-center">
+                <div class="col-lg-6">
+                    <div class="p-5"><img class="img-fluid rounded-circle" src="{% static 'mi_app/assets/img/02.jpg' %}" alt="..." /></div>
+                </div>
+                <div class="col-lg-6">
+                    <div class="p-5">
+                        <h2 class="display-4">Somos campeones del mundo</h2>
+                        <p>Primero nosotros, segundo francia, tercero campeones</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+    <!-- Content section 3-->
+    <section>
+        <div class="container px-5">
+            <div class="row gx-5 align-items-center">
+                <div class="col-lg-6 order-lg-2">
+                    <div class="p-5"><img class="img-fluid rounded-circle" src="{% static 'mi_app/assets/img/03.jpg' %}" alt="..." /></div>
+                </div>
+                <div class="col-lg-6 order-lg-1">
+                    <div class="p-5">
+                        <h2 class="display-4">A la grande le puse Cuca</h2>
+                        <p>Lo el mejor material de los simpsons.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>    
+    {% endblock main %}

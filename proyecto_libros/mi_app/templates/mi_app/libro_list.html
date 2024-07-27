@@ -1,0 +1,17 @@
+{% extends 'mi_app/base.html' %}
+
+{% load static %}
+
+{% block title %} Libros actuales {% endblock title %}
+
+{% block main %}
+    <!-- Content section 1-->
+    <section id="scroll">
+        <h1>Lista de Libros</h1>
+        <ul>
+            {% for libro in libros %}
+                <li>{{ libro.isbn }} -{{ libro.nombre }} - {{ libro.autor }} - ${{ libro.precio }}</li>
+            {% endfor %}
+        </ul>
+    </section>
+{% endblock main %}
