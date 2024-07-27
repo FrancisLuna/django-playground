@@ -1,6 +1,9 @@
 from django import forms
 from .models import Customer, Product, OrderItem
 
+class ExistingCustomerForm(forms.Form):
+    customer = forms.ModelChoiceField(queryset=Customer.objects.all(), required=False, widget=forms.Select(attrs={'class': 'form-control'}))
+
 class CustomerForm(forms.ModelForm):
     class Meta:
         model = Customer
@@ -11,9 +14,6 @@ class CustomerForm(forms.ModelForm):
             'email': forms.EmailInput(attrs={'class': 'form-control', 'placeholder': 'Correo electrónico'}),
             'phone': forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'Teléfono'}),
         }
-
-class ExistingCustomerForm(forms.Form):
-    customer = forms.ModelChoiceField(queryset=Customer.objects.all(), required=False, widget=forms.Select(attrs={'class': 'form-control'}))
 
 class OrderItemForm(forms.ModelForm):
     class Meta:

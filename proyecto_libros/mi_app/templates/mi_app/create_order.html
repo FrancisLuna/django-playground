@@ -1,9 +1,11 @@
 <!DOCTYPE html>
 <html>
 <head>
+    {% load static %}
     <title>Crear Pedido</title>
-    {# <link rel="stylesheet" type="text/css" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css"> #}
-</head>
+    <link href="{% static 'mi_app/css/styles.css' %}" rel="stylesheet" />
+
+
 <body>
     <h2>Formulario de Pedido</h2>
     <form method="post">
@@ -11,9 +13,11 @@
         
         <h3>Seleccionar Cliente Existente</h3>
         {{ existing_customer_form.as_p }}
-        
+
         <h3>O Crear Nuevo Cliente</h3>
-        {{ new_customer_form.as_p }}
+        <div id="new-customer-form">
+            {{ new_customer_form.as_p }}
+        </div>
         
         <h3>Agregar Productos</h3>
         <div id="order-items-container">
@@ -28,12 +32,28 @@
         </div>
         <button type="button" id="add-item" class="btn btn-secondary">Agregar otro producto</button>
         <button type="submit" class="btn btn-primary">Crear Pedido</button>
+        {% if error %}
+            <p style="color: red;">{{ error }}</p>
+        {% endif %}
     </form>
     <script>
         document.getElementById('add-item').addEventListener('click', function() {
             var container = document.getElementById('order-items-container');
             var newItem = container.children[0].cloneNode(true);
             container.appendChild(newItem);
+        });
+
+        document.querySelector('[name="customer"]').addEventListener('change', function() {
+            var newCustomerForm = document.getElementById('new-customer-form');
+            if (this.value) {
+                newCustomerForm.style.display = 'none';
+                // Clear the new customer form fields
+                document.querySelectorAll('#new-customer-form input').forEach(function(input) {
+                    input.value = '';
+                });
+            } else {
+                newCustomerForm.style.display = 'block';
+            }
         });
     </script>
 </body>

@@ -1,7 +1,6 @@
 from django.shortcuts import render, get_object_or_404, redirect
 from .models import Customer, Product, Order, OrderItem
-from .forms import CustomerForm, OrderItemForm, OrderQueryForm, ExistingCustomerForm
-
+from .forms import CustomerForm, ExistingCustomerForm, OrderItemForm, OrderQueryForm
 
 def inicio(request):
     # return render(request, "Hola")
@@ -26,24 +25,27 @@ def create_order(request):
         new_customer_form = CustomerForm(request.POST)
         order_items_data = zip(request.POST.getlist('product'), request.POST.getlist('quantity'))
 
+        customer = None
         if existing_customer_form.is_valid() and existing_customer_form.cleaned_data['customer']:
             customer = existing_customer_form.cleaned_data['customer']
         elif new_customer_form.is_valid():
             customer = new_customer_form.save()
+        
+        if customer:
+            order = Order.objects.create(customer=customer)
+            for product_id, quantity in order_items_data:
+                product = Product.objects.get(id=product_id)
+                OrderItem.objects.create(order=order, product=product, quantity=quantity)
+            return redirect('mi_app/order_confirmation', order_id=order.id)
         else:
-            return render(request, 'create_order.html', {
+            return render(request, 'mi_app/create_order.html', {
                 'existing_customer_form': existing_customer_form,
                 'new_customer_form': new_customer_form,
                 'order_item_forms': [OrderItemForm()] * len(request.POST.getlist('product')),
                 'products': Product.objects.all(),
+                'error': "Por favor, seleccione un cliente existente o complete los campos para crear uno nuevo.",
             })
 
-        order = Order.objects.create(customer=customer)
-        for product_id, quantity in order_items_data:
-            product = Product.objects.get(id=product_id)
-            OrderItem.objects.create(order=order, product=product, quantity=quantity)
-
-        return redirect('order_confirmation', order_id=order.id)
     else:
         existing_customer_form = ExistingCustomerForm()
         new_customer_form = CustomerForm()
