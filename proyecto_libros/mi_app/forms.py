@@ -1,15 +1,28 @@
 from django import forms
+from .models import Customer, Product, OrderItem
 
-class LibroForm(forms.Form):
-    isbn = forms.CharField(max_length=13, label="ISBN")
-    nombre = forms.CharField(max_length=255, label="Nombre")
-    genero = forms.CharField(max_length=100, label="Género")
-    autor = forms.CharField(max_length=255, label="Autor")
-    precio = forms.DecimalField(max_digits=6, decimal_places=2, label="Precio")
+class CustomerForm(forms.ModelForm):
+    class Meta:
+        model = Customer
+        fields = ['first_name', 'last_name', 'email', 'phone']
+        widgets = {
+            'first_name': forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'Nombre'}),
+            'last_name': forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'Apellido'}),
+            'email': forms.EmailInput(attrs={'class': 'form-control', 'placeholder': 'Correo electrónico'}),
+            'phone': forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'Teléfono'}),
+        }
 
+class ExistingCustomerForm(forms.Form):
+    customer = forms.ModelChoiceField(queryset=Customer.objects.all(), required=False, widget=forms.Select(attrs={'class': 'form-control'}))
 
-class BuscarLibro(forms.Form):
-    isbn = forms.CharField(max_length=13, label="Buscar por ISBN")
+class OrderItemForm(forms.ModelForm):
+    class Meta:
+        model = OrderItem
+        fields = ['product', 'quantity']
+        widgets = {
+            'product': forms.Select(attrs={'class': 'form-control'}),
+            'quantity': forms.NumberInput(attrs={'class': 'form-control', 'min': 1}),
+        }
 
-
-
+class OrderQueryForm(forms.Form):
+    order_number = forms.IntegerField(label="Número de Pedido", widget=forms.NumberInput(attrs={'class': 'form-control', 'placeholder': 'Número de Pedido'}))

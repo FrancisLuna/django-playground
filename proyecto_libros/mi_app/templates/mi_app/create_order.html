@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Crear Pedido</title>
+    {# <link rel="stylesheet" type="text/css" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css"> #}
+</head>
+<body>
+    <h2>Formulario de Pedido</h2>
+    <form method="post">
+        {% csrf_token %}
+        
+        <h3>Seleccionar Cliente Existente</h3>
+        {{ existing_customer_form.as_p }}
+        
+        <h3>O Crear Nuevo Cliente</h3>
+        {{ new_customer_form.as_p }}
+        
+        <h3>Agregar Productos</h3>
+        <div id="order-items-container">
+            <div class="order-item-form">
+                <select name="product" class="form-control">
+                    {% for product in products %}
+                        <option value="{{ product.id }}">{{ product.title }} - {{ product.author }}</option>
+                    {% endfor %}
+                </select>
+                <input type="number" name="quantity" min="1" class="form-control" placeholder="Cantidad">
+            </div>
+        </div>
+        <button type="button" id="add-item" class="btn btn-secondary">Agregar otro producto</button>
+        <button type="submit" class="btn btn-primary">Crear Pedido</button>
+    </form>
+    <script>
+        document.getElementById('add-item').addEventListener('click', function() {
+            var container = document.getElementById('order-items-container');
+            var newItem = container.children[0].cloneNode(true);
+            container.appendChild(newItem);
+        });
+    </script>
+</body>
+</html>

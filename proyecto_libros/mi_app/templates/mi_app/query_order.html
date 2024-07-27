@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Consultar Pedido</title>
+</head>
+<body>
+    <h2>Consultar Pedido</h2>
+    <form method="post">
+        {% csrf_token %}
+        {{ form.as_p }}
+        <button type="submit" class="btn btn-primary">Consultar</button>
+    </form>
+    {% if order %}
+        <h3>Detalle del Pedido</h3>
+        <p>Pedido #: {{ order.id }}</p>
+        <p>Cliente: {{ order.customer }}</p>
+        <ul>
+            {% for item in order_items %}
+                <li>{{ item.product.title }} - Cantidad: {{ item.quantity }}</li>
+            {% endfor %}
+        </ul>
+    {% endif %}
+</body>
+</html>

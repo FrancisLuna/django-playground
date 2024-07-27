@@ -1,0 +1,17 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Confirmación de Pedido</title>
+</head>
+<body>
+    <h2>Pedido Confirmado</h2>
+    <p>Pedido #: {{ order.id }}</p>
+    <p>Cliente: {{ order.customer }}</p>
+    <h3>Productos</h3>
+    <ul>
+        {% for item in order_items %}
+            <li>{{ item.product.title }} - Cantidad: {{ item.quantity }}</li>
+        {% endfor %}
+    </ul>
+</body>
+</html>

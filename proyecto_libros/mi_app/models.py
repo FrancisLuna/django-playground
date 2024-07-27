@@ -1,59 +1,50 @@
 from django.db import models
-from django.contrib.auth.models import User
 
-# Modelo para los libros
-class Libro(models.Model):
-    isbn = models.CharField(max_length=13, unique=True, verbose_name="ISBN")
-    nombre = models.CharField(max_length=255, verbose_name="Nombre")
-    genero = models.CharField(max_length=100, verbose_name="Género")
-    autor = models.CharField(max_length=255, verbose_name="Autor")
-    precio = models.DecimalField(max_digits=6, decimal_places=2, verbose_name="Precio")
-
-    def __str__(self):
-        return str(self.nombre)
+class Customer(models.Model):
+    first_name = models.CharField(max_length=30)
+    last_name = models.CharField(max_length=30)
+    email = models.EmailField()
+    phone = models.CharField(max_length=15)
 
     class Meta:
-        verbose_name = "Libro"
-        verbose_name_plural = "Libros"
-
-
-# Modelo para los usuarios
-class Usuario(models.Model):
-    user = models.OneToOneField(User, on_delete=models.CASCADE)
-    telefono = models.CharField(max_length=15, verbose_name="Teléfono")
-    direccion_envio = models.TextField(verbose_name="Dirección de envío")
-    email = models.EmailField(unique=True, verbose_name="Email")
+        verbose_name = "Cliente"
+        verbose_name_plural = "Clientes"
 
     def __str__(self):
-        return f"{self.user}"
+        return f"{self.first_name} {self.last_name}"
+
+class Product(models.Model):
+    isbn = models.CharField(max_length=13)
+    title = models.CharField(max_length=100)
+    author = models.CharField(max_length=50)
+    price = models.DecimalField(max_digits=10, decimal_places=2)
 
     class Meta:
-        verbose_name = "Usuario"
-        verbose_name_plural = "Usuarios"
-
-
-# Modelo para el carrito
-class Carrito(models.Model):
-    usuario = models.ForeignKey(Usuario, on_delete=models.CASCADE, related_name="carritos")
-    libros = models.ManyToManyField(Libro, through='CarritoLibro')
+        verbose_name = "Producto"
+        verbose_name_plural = "Productos"
 
     def __str__(self):
-        return f"Carrito de {self.usuario}"
+        return f"{self.title} by {self.author}"
+
+class Order(models.Model):
+    customer = models.ForeignKey(Customer, on_delete=models.CASCADE)
+    order_date = models.DateTimeField(auto_now_add=True)
 
     class Meta:
-        verbose_name = "Carrito"
-        verbose_name_plural = "Carritos"
-
-
-# Tabla intermedia para relación muchos a muchos entre Carrito y Libro
-class CarritoLibro(models.Model):
-    carrito = models.ForeignKey(Carrito, on_delete=models.CASCADE)
-    libro = models.ForeignKey(Libro, on_delete=models.CASCADE)
-    cantidad = models.PositiveIntegerField(default=1)
+        verbose_name = "Pedido"
+        verbose_name_plural = "Pedidos"
 
     def __str__(self):
-        return f"{self.cantidad} x {self.libro} en {self.carrito}"
+        return f"Order #{self.id} by {self.customer}"
+
+class OrderItem(models.Model):
+    order = models.ForeignKey(Order, on_delete=models.CASCADE)
+    product = models.ForeignKey(Product, on_delete=models.CASCADE)
+    quantity = models.PositiveIntegerField()
 
     class Meta:
-        verbose_name = "CarritoLibro"
-        verbose_name_plural = "CarritosLibros"
+        verbose_name = "Detalle del Pedido"
+        verbose_name_plural = "Detalles del Pedido"
+
+    def __str__(self):
+        return f"{self.quantity} x {self.product.title} (Order #{self.order.id})"

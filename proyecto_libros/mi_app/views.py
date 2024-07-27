@@ -1,13 +1,14 @@
-from django.shortcuts import render
-from .models import Libro
-from mi_app.forms import LibroForm, BuscarLibro
+from django.shortcuts import render, get_object_or_404, redirect
+from .models import Customer, Product, Order, OrderItem
+from .forms import CustomerForm, OrderItemForm, OrderQueryForm, ExistingCustomerForm
+
 
 def inicio(request):
     # return render(request, "Hola")
     return render(request, "mi_app/index.html")
 
 def libro_list(request):
-    libros = Libro.objects.all()
+    libros = Product.objects.all()
     return render(request, "mi_app/libro_list.html", {'libros': libros})
     # return render(request, "mi_app/libro_list.html")
 
@@ -18,32 +19,65 @@ def carrito_list(request):
     return render(request, "mi_app/carrito_list.html")
 
 
-# Formularios
-def libro_create(request):
-    if request.method == "POST":
-        libro_form = LibroForm(request.POST)
-        if libro_form.is_valid():
-            libro = Libro(
-                isbn=libro_form.cleaned_data['isbn'],
-                nombre=libro_form.cleaned_data['nombre'],
-                genero=libro_form.cleaned_data['genero'],
-                autor=libro_form.cleaned_data['autor'],
-                precio=libro_form.cleaned_data['precio']
-            )
-            libro.save()
-            return render(request, "mi_app/index.html")
-    else:
-        libro_form = LibroForm()
-    return render(request, "mi_app/libro_create.html", {"libro_create_form": libro_form})
+########################################################################################
+def create_order(request):
+    if request.method == 'POST':
+        existing_customer_form = ExistingCustomerForm(request.POST)
+        new_customer_form = CustomerForm(request.POST)
+        order_items_data = zip(request.POST.getlist('product'), request.POST.getlist('quantity'))
 
-def buscar_libro(request):
-    if request.method == "POST":
-        buscar_libro_form = BuscarLibro(request.POST)
-        if buscar_libro_form.is_valid():
-            isbn_search = buscar_libro_form.cleaned_data["isbn"]            
-            libro = Libro.objects.get(isbn=isbn_search)
-            return render(request, "mi_app/resultado_libro.html", {"libro": libro})
-    else:
-        buscar_libro_form = BuscarLibro()
+        if existing_customer_form.is_valid() and existing_customer_form.cleaned_data['customer']:
+            customer = existing_customer_form.cleaned_data['customer']
+        elif new_customer_form.is_valid():
+            customer = new_customer_form.save()
+        else:
+            return render(request, 'create_order.html', {
+                'existing_customer_form': existing_customer_form,
+                'new_customer_form': new_customer_form,
+                'order_item_forms': [OrderItemForm()] * len(request.POST.getlist('product')),
+                'products': Product.objects.all(),
+            })
 
-    return render(request, "mi_app/buscar-libro.html", {"buscar_libro_form": buscar_libro_form})
+        order = Order.objects.create(customer=customer)
+        for product_id, quantity in order_items_data:
+            product = Product.objects.get(id=product_id)
+            OrderItem.objects.create(order=order, product=product, quantity=quantity)
+
+        return redirect('order_confirmation', order_id=order.id)
+    else:
+        existing_customer_form = ExistingCustomerForm()
+        new_customer_form = CustomerForm()
+        order_item_forms = [OrderItemForm()]
+
+    products = Product.objects.all()
+
+    return render(request, 'mi_app/create_order.html', {
+        'existing_customer_form': existing_customer_form,
+        'new_customer_form': new_customer_form,
+        'order_item_forms': order_item_forms,
+        'products': products,
+    })
+
+def order_confirmation(request, order_id):
+    order = get_object_or_404(Order, id=order_id)
+    order_items = OrderItem.objects.filter(order=order)
+    return render(request, 'mi_app/order_confirmation.html', {
+        'order': order,
+        'order_items': order_items,
+    })
+
+def query_order(request):
+    if request.method == 'POST':
+        form = OrderQueryForm(request.POST)
+        if form.is_valid():
+            order_number = form.cleaned_data['order_number']
+            order = get_object_or_404(Order, id=order_number)
+            order_items = OrderItem.objects.filter(order=order)
+            return render(request, 'mi_app/order_detail.html', {
+                'order': order,
+                'order_items': order_items,
+            })
+    else:
+        form = OrderQueryForm()
+
+    return render(request, 'mi_app/query_order.html', {'form': form})
