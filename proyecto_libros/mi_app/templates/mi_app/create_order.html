@@ -1,14 +1,12 @@
-<!DOCTYPE html>
-<html>
-<head>
-    {% load static %}
-    <title>Crear Pedido</title>
-    <link href="{% static 'mi_app/css/styles.css' %}" rel="stylesheet" />
+{% extends 'mi_app/base.html' %}
 
+{% load static %}
 
-<body>
+{% block title %} Libros actuales {% endblock title %}
+
+{% block main %}
     <h2>Formulario de Pedido</h2>
-    <form method="post">
+    <form method="post" id="order-form">
         {% csrf_token %}
         
         <h3>Seleccionar Cliente Existente</h3>
@@ -22,12 +20,13 @@
         <h3>Agregar Productos</h3>
         <div id="order-items-container">
             <div class="order-item-form">
-                <select name="product" class="form-control">
+                <select name="product" class="form-control" required>
+                    <option value="">Seleccione un producto</option>
                     {% for product in products %}
                         <option value="{{ product.id }}">{{ product.title }} - {{ product.author }}</option>
                     {% endfor %}
                 </select>
-                <input type="number" name="quantity" min="1" class="form-control" placeholder="Cantidad">
+                <input type="number" name="quantity" min="1" class="form-control" placeholder="Cantidad" required>
             </div>
         </div>
         <button type="button" id="add-item" class="btn btn-secondary">Agregar otro producto</button>
@@ -36,6 +35,7 @@
             <p style="color: red;">{{ error }}</p>
         {% endif %}
     </form>
+    
     <script>
         document.getElementById('add-item').addEventListener('click', function() {
             var container = document.getElementById('order-items-container');
@@ -47,14 +47,29 @@
             var newCustomerForm = document.getElementById('new-customer-form');
             if (this.value) {
                 newCustomerForm.style.display = 'none';
-                // Clear the new customer form fields
+                // Clear and disable the new customer form fields
                 document.querySelectorAll('#new-customer-form input').forEach(function(input) {
                     input.value = '';
+                    input.disabled = true;
                 });
             } else {
                 newCustomerForm.style.display = 'block';
+                // Enable the new customer form fields
+                document.querySelectorAll('#new-customer-form input').forEach(function(input) {
+                    input.disabled = false;
+                });
+            }
+        });
+
+        document.getElementById('order-form').addEventListener('submit', function(e) {
+            var customerSelected = document.querySelector('[name="customer"]').value;
+            var newCustomerFields = document.querySelectorAll('#new-customer-form input:not([type="hidden"])');
+            var newCustomerFilled = Array.from(newCustomerFields).every(input => input.value.trim() !== '');
+
+            if (!customerSelected && !newCustomerFilled) {
+                e.preventDefault();
+                alert('Por favor, seleccione un cliente existente o complete todos los campos para crear uno nuevo.');
             }
         });
     </script>
-</body>
-</html>
+{% endblock main %}

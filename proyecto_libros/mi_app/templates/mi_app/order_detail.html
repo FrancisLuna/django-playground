@@ -1,20 +1,21 @@
-<!DOCTYPE html>
-<html>
-<head>
-    <title>Detalle del Pedido</title>
-    {# <link rel="stylesheet" type="text/css" href="{% static 'mi_app/css/styles.css' %}"> #}
-</head>
-<body>
-    <h2>Detalle del Pedido</h2>
-    <p><strong>Pedido #:</strong> {{ order.id }}</p>
-    <p><strong>Cliente:</strong> {{ order.customer.first_name }} {{ order.customer.last_name }}</p>
-    <p><strong>Email:</strong> {{ order.customer.email }}</p>
-    <p><strong>Teléfono:</strong> {{ order.customer.phone }}</p>
+{% extends 'mi_app/base.html' %}
+
+{% load static %}
+
+{% block title %} Libros actuales {% endblock title %}
+
+{% block main %}
+
+<h2>Detalle del Pedido</h2>
+<p><strong>Pedido #:</strong> {{ order.id }}</p>
+<p><strong>Cliente:</strong> {{ order.customer.first_name }} {{ order.customer.last_name }}</p>
+<p><strong>Email:</strong> {{ order.customer.email }}</p>
+<p><strong>Teléfono:</strong> {{ order.customer.phone }}</p>
     <h3>Productos</h3>
     <ul>
         {% for item in order_items %}
             <li>{{ item.product.title }} - Autor: {{ item.product.author }} - Cantidad: {{ item.quantity }}</li>
         {% endfor %}
     </ul>
-</body>
-</html>
+
+{% endblock main %}

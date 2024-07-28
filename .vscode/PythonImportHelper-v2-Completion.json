@@ -1,13 +1,5 @@
 [
     {
-        "label": "settings",
-        "importPath": "django.conf",
-        "description": "django.conf",
-        "isExtraImport": true,
-        "detail": "django.conf",
-        "documentation": {}
-    },
-    {
         "label": "migrations",
         "importPath": "django.db",
         "description": "django.db",
@@ -17,6 +9,14 @@
     },
     {
         "label": "models",
+        "importPath": "django.db",
+        "description": "django.db",
+        "isExtraImport": true,
+        "detail": "django.db",
+        "documentation": {}
+    },
+    {
+        "label": "migrations",
         "importPath": "django.db",
         "description": "django.db",
         "isExtraImport": true,
@@ -73,14 +73,6 @@
         "documentation": {}
     },
     {
-        "label": "User",
-        "importPath": "django.contrib.auth.models",
-        "description": "django.contrib.auth.models",
-        "isExtraImport": true,
-        "detail": "django.contrib.auth.models",
-        "documentation": {}
-    },
-    {
         "label": "TestCase",
         "importPath": "django.test",
         "description": "django.test",
@@ -129,19 +121,19 @@
         "documentation": {}
     },
     {
-        "label": "LibroForm",
-        "importPath": "mi_app.forms",
-        "description": "mi_app.forms",
+        "label": "get_object_or_404",
+        "importPath": "django.shortcuts",
+        "description": "django.shortcuts",
         "isExtraImport": true,
-        "detail": "mi_app.forms",
+        "detail": "django.shortcuts",
         "documentation": {}
     },
     {
-        "label": "BuscarLibro",
-        "importPath": "mi_app.forms",
-        "description": "mi_app.forms",
+        "label": "redirect",
+        "importPath": "django.shortcuts",
+        "description": "django.shortcuts",
         "isExtraImport": true,
-        "detail": "mi_app.forms",
+        "detail": "django.shortcuts",
         "documentation": {}
     },
     {
@@ -191,8 +183,17 @@
         "kind": 6,
         "importPath": "proyecto_libros.mi_app.migrations.0001_initial",
         "description": "proyecto_libros.mi_app.migrations.0001_initial",
-        "peekOfCode": "class Migration(migrations.Migration):\n    initial = True\n    dependencies = [\n        migrations.swappable_dependency(settings.AUTH_USER_MODEL),\n    ]\n    operations = [\n        migrations.CreateModel(\n            name='Carrito',\n            fields=[\n                ('id', models.BigAutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),",
+        "peekOfCode": "class Migration(migrations.Migration):\n    initial = True\n    dependencies = [\n    ]\n    operations = [\n        migrations.CreateModel(\n            name='Customer',\n            fields=[\n                ('id', models.BigAutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),\n                ('first_name', models.CharField(max_length=30)),",
         "detail": "proyecto_libros.mi_app.migrations.0001_initial",
+        "documentation": {}
+    },
+    {
+        "label": "Migration",
+        "kind": 6,
+        "importPath": "proyecto_libros.mi_app.migrations.0002_alter_product_options",
+        "description": "proyecto_libros.mi_app.migrations.0002_alter_product_options",
+        "peekOfCode": "class Migration(migrations.Migration):\n    dependencies = [\n        ('mi_app', '0001_initial'),\n    ]\n    operations = [\n        migrations.AlterModelOptions(\n            name='product',\n            options={'verbose_name': 'Product', 'verbose_name_plural': 'Products'},\n        ),\n    ]",
+        "detail": "proyecto_libros.mi_app.migrations.0002_alter_product_options",
         "documentation": {}
     },
     {
@@ -205,56 +206,74 @@
         "documentation": {}
     },
     {
-        "label": "LibroForm",
+        "label": "ExistingCustomerForm",
         "kind": 6,
         "importPath": "proyecto_libros.mi_app.forms",
         "description": "proyecto_libros.mi_app.forms",
-        "peekOfCode": "class LibroForm(forms.Form):\n    isbn = forms.CharField(max_length=13, label=\"ISBN\")\n    nombre = forms.CharField(max_length=255, label=\"Nombre\")\n    genero = forms.CharField(max_length=100, label=\"Género\")\n    autor = forms.CharField(max_length=255, label=\"Autor\")\n    precio = forms.DecimalField(max_digits=6, decimal_places=2, label=\"Precio\")\nclass BuscarLibro(forms.Form):\n    isbn = forms.CharField(max_length=13, label=\"Buscar por ISBN\")",
+        "peekOfCode": "class ExistingCustomerForm(forms.Form):\n    customer = forms.ModelChoiceField(queryset=Customer.objects.all(), required=False, widget=forms.Select(attrs={'class': 'form-control'}))\nclass CustomerForm(forms.ModelForm):\n    class Meta:\n        model = Customer\n        fields = ['first_name', 'last_name', 'email', 'phone']\n        widgets = {\n            'first_name': forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'Nombre'}),\n            'last_name': forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'Apellido'}),\n            'email': forms.EmailInput(attrs={'class': 'form-control', 'placeholder': 'Correo electrónico'}),",
         "detail": "proyecto_libros.mi_app.forms",
         "documentation": {}
     },
     {
-        "label": "BuscarLibro",
+        "label": "CustomerForm",
         "kind": 6,
         "importPath": "proyecto_libros.mi_app.forms",
         "description": "proyecto_libros.mi_app.forms",
-        "peekOfCode": "class BuscarLibro(forms.Form):\n    isbn = forms.CharField(max_length=13, label=\"Buscar por ISBN\")",
+        "peekOfCode": "class CustomerForm(forms.ModelForm):\n    class Meta:\n        model = Customer\n        fields = ['first_name', 'last_name', 'email', 'phone']\n        widgets = {\n            'first_name': forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'Nombre'}),\n            'last_name': forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'Apellido'}),\n            'email': forms.EmailInput(attrs={'class': 'form-control', 'placeholder': 'Correo electrónico'}),\n            'phone': forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'Teléfono'}),\n        }",
         "detail": "proyecto_libros.mi_app.forms",
         "documentation": {}
     },
     {
-        "label": "Libro",
+        "label": "OrderItemForm",
+        "kind": 6,
+        "importPath": "proyecto_libros.mi_app.forms",
+        "description": "proyecto_libros.mi_app.forms",
+        "peekOfCode": "class OrderItemForm(forms.ModelForm):\n    class Meta:\n        model = OrderItem\n        fields = ['product', 'quantity']\n        widgets = {\n            'product': forms.Select(attrs={'class': 'form-control'}),\n            'quantity': forms.NumberInput(attrs={'class': 'form-control', 'min': 1}),\n        }\nclass OrderQueryForm(forms.Form):\n    order_number = forms.IntegerField(label=\"Número de Pedido\", widget=forms.NumberInput(attrs={'class': 'form-control', 'placeholder': 'Número de Pedido'}))",
+        "detail": "proyecto_libros.mi_app.forms",
+        "documentation": {}
+    },
+    {
+        "label": "OrderQueryForm",
+        "kind": 6,
+        "importPath": "proyecto_libros.mi_app.forms",
+        "description": "proyecto_libros.mi_app.forms",
+        "peekOfCode": "class OrderQueryForm(forms.Form):\n    order_number = forms.IntegerField(label=\"Número de Pedido\", widget=forms.NumberInput(attrs={'class': 'form-control', 'placeholder': 'Número de Pedido'}))",
+        "detail": "proyecto_libros.mi_app.forms",
+        "documentation": {}
+    },
+    {
+        "label": "Customer",
         "kind": 6,
         "importPath": "proyecto_libros.mi_app.models",
         "description": "proyecto_libros.mi_app.models",
-        "peekOfCode": "class Libro(models.Model):\n    isbn = models.CharField(max_length=13, unique=True, verbose_name=\"ISBN\")\n    nombre = models.CharField(max_length=255, verbose_name=\"Nombre\")\n    genero = models.CharField(max_length=100, verbose_name=\"Género\")\n    autor = models.CharField(max_length=255, verbose_name=\"Autor\")\n    precio = models.DecimalField(max_digits=6, decimal_places=2, verbose_name=\"Precio\")\n    def __str__(self):\n        return str(self.nombre)\n    class Meta:\n        verbose_name = \"Libro\"",
+        "peekOfCode": "class Customer(models.Model):\n    first_name = models.CharField(max_length=30)\n    last_name = models.CharField(max_length=30)\n    email = models.EmailField()\n    phone = models.CharField(max_length=15)\n    class Meta:\n        verbose_name = \"Cliente\"\n        verbose_name_plural = \"Clientes\"\n    def __str__(self):\n        return f\"{self.first_name} {self.last_name}\"",
         "detail": "proyecto_libros.mi_app.models",
         "documentation": {}
     },
     {
-        "label": "Usuario",
+        "label": "Product",
         "kind": 6,
         "importPath": "proyecto_libros.mi_app.models",
         "description": "proyecto_libros.mi_app.models",
-        "peekOfCode": "class Usuario(models.Model):\n    user = models.OneToOneField(User, on_delete=models.CASCADE)\n    telefono = models.CharField(max_length=15, verbose_name=\"Teléfono\")\n    direccion_envio = models.TextField(verbose_name=\"Dirección de envío\")\n    email = models.EmailField(unique=True, verbose_name=\"Email\")\n    def __str__(self):\n        return f\"{self.user}\"\n    class Meta:\n        verbose_name = \"Usuario\"\n        verbose_name_plural = \"Usuarios\"",
+        "peekOfCode": "class Product(models.Model):\n    isbn = models.CharField(max_length=13)\n    title = models.CharField(max_length=100)\n    author = models.CharField(max_length=50)\n    price = models.DecimalField(max_digits=10, decimal_places=2)\n    class Meta:\n        verbose_name = \"Product\"\n        verbose_name_plural = \"Products\"\n    def __str__(self):\n        return f\"{self.title} by {self.author}\"",
         "detail": "proyecto_libros.mi_app.models",
         "documentation": {}
     },
     {
-        "label": "Carrito",
+        "label": "Order",
         "kind": 6,
         "importPath": "proyecto_libros.mi_app.models",
         "description": "proyecto_libros.mi_app.models",
-        "peekOfCode": "class Carrito(models.Model):\n    usuario = models.ForeignKey(Usuario, on_delete=models.CASCADE, related_name=\"carritos\")\n    libros = models.ManyToManyField(Libro, through='CarritoLibro')\n    def __str__(self):\n        return f\"Carrito de {self.usuario}\"\n    class Meta:\n        verbose_name = \"Carrito\"\n        verbose_name_plural = \"Carritos\"\n# Tabla intermedia para relación muchos a muchos entre Carrito y Libro\nclass CarritoLibro(models.Model):",
+        "peekOfCode": "class Order(models.Model):\n    customer = models.ForeignKey(Customer, on_delete=models.CASCADE)\n    order_date = models.DateTimeField(auto_now_add=True)\n    class Meta:\n        verbose_name = \"Pedido\"\n        verbose_name_plural = \"Pedidos\"\n    def __str__(self):\n        return f\"Order #{self.id} by {self.customer}\"\nclass OrderItem(models.Model):\n    order = models.ForeignKey(Order, on_delete=models.CASCADE)",
         "detail": "proyecto_libros.mi_app.models",
         "documentation": {}
     },
     {
-        "label": "CarritoLibro",
+        "label": "OrderItem",
         "kind": 6,
         "importPath": "proyecto_libros.mi_app.models",
         "description": "proyecto_libros.mi_app.models",
-        "peekOfCode": "class CarritoLibro(models.Model):\n    carrito = models.ForeignKey(Carrito, on_delete=models.CASCADE)\n    libro = models.ForeignKey(Libro, on_delete=models.CASCADE)\n    cantidad = models.PositiveIntegerField(default=1)\n    def __str__(self):\n        return f\"{self.cantidad} x {self.libro} en {self.carrito}\"\n    class Meta:\n        verbose_name = \"CarritoLibro\"\n        verbose_name_plural = \"CarritosLibros\"",
+        "peekOfCode": "class OrderItem(models.Model):\n    order = models.ForeignKey(Order, on_delete=models.CASCADE)\n    product = models.ForeignKey(Product, on_delete=models.CASCADE)\n    quantity = models.PositiveIntegerField()\n    class Meta:\n        verbose_name = \"Detalle del Pedido\"\n        verbose_name_plural = \"Detalles del Pedido\"\n    def __str__(self):\n        return f\"{self.quantity} x {self.product.title} (Order #{self.order.id})\"",
         "detail": "proyecto_libros.mi_app.models",
         "documentation": {}
     },
@@ -263,7 +282,7 @@
         "kind": 5,
         "importPath": "proyecto_libros.mi_app.urls",
         "description": "proyecto_libros.mi_app.urls",
-        "peekOfCode": "urlpatterns = [\n    path('', views.inicio, name=\"Inicio\"),\n    path('libros/', views.libro_list, name=\"Libros\"),\n    path('usuarios/', views.usuario_list, name='Usuario'),\n    path('carritos/', views.carrito_list, name='Carrito'),\n]\nformularios = [\n    path('libro-create/', views.libro_create, name=\"Añadir_Libro\"),\n    path('buscar-libro/', views.buscar_libro, name=\"Buscar-Libro\"),\n]",
+        "peekOfCode": "urlpatterns = [\n    path('', views.inicio, name=\"Inicio\"),\n    path('libros/', views.libro_list, name=\"Libros\"),\n]\nformularios = [\n    path('create-order/', views.create_order, name='create_order'),\n    path('order-confirmation/<int:order_id>/', views.order_confirmation, name='order_confirmation'),\n    path('query-order/', views.query_order, name='query_order'),\n]\nurlpatterns += formularios",
         "detail": "proyecto_libros.mi_app.urls",
         "documentation": {}
     },
@@ -272,7 +291,7 @@
         "kind": 5,
         "importPath": "proyecto_libros.mi_app.urls",
         "description": "proyecto_libros.mi_app.urls",
-        "peekOfCode": "formularios = [\n    path('libro-create/', views.libro_create, name=\"Añadir_Libro\"),\n    path('buscar-libro/', views.buscar_libro, name=\"Buscar-Libro\"),\n]\nurlpatterns += formularios",
+        "peekOfCode": "formularios = [\n    path('create-order/', views.create_order, name='create_order'),\n    path('order-confirmation/<int:order_id>/', views.order_confirmation, name='order_confirmation'),\n    path('query-order/', views.query_order, name='query_order'),\n]\nurlpatterns += formularios",
         "detail": "proyecto_libros.mi_app.urls",
         "documentation": {}
     },
@@ -281,7 +300,7 @@
         "kind": 2,
         "importPath": "proyecto_libros.mi_app.views",
         "description": "proyecto_libros.mi_app.views",
-        "peekOfCode": "def inicio(request):\n    # return render(request, \"Hola\")\n    return render(request, \"mi_app/index.html\")\ndef libro_list(request):\n    libros = Libro.objects.all()\n    return render(request, \"mi_app/libro_list.html\", {'libros': libros})\n    # return render(request, \"mi_app/libro_list.html\")\ndef usuario_list(request):\n    return render(request, \"mi_app/usuario_list.html\")\ndef carrito_list(request):",
+        "peekOfCode": "def inicio(request):\n    # return render(request, \"Hola\")\n    return render(request, \"mi_app/index.html\")\ndef libro_list(request):\n    libros = Product.objects.all()\n    return render(request, \"mi_app/libro_list.html\", {'libros': libros})\ndef usuario_list(request):\n    return render(request, \"mi_app/usuario_list.html\")\ndef carrito_list(request):\n    return render(request, \"mi_app/carrito_list.html\")",
         "detail": "proyecto_libros.mi_app.views",
         "documentation": {}
     },
@@ -290,7 +309,7 @@
         "kind": 2,
         "importPath": "proyecto_libros.mi_app.views",
         "description": "proyecto_libros.mi_app.views",
-        "peekOfCode": "def libro_list(request):\n    libros = Libro.objects.all()\n    return render(request, \"mi_app/libro_list.html\", {'libros': libros})\n    # return render(request, \"mi_app/libro_list.html\")\ndef usuario_list(request):\n    return render(request, \"mi_app/usuario_list.html\")\ndef carrito_list(request):\n    return render(request, \"mi_app/carrito_list.html\")\n# Formularios\ndef libro_create(request):",
+        "peekOfCode": "def libro_list(request):\n    libros = Product.objects.all()\n    return render(request, \"mi_app/libro_list.html\", {'libros': libros})\ndef usuario_list(request):\n    return render(request, \"mi_app/usuario_list.html\")\ndef carrito_list(request):\n    return render(request, \"mi_app/carrito_list.html\")\n########################################################################################\ndef create_order(request):\n    if request.method == 'POST':",
         "detail": "proyecto_libros.mi_app.views",
         "documentation": {}
     },
@@ -299,7 +318,7 @@
         "kind": 2,
         "importPath": "proyecto_libros.mi_app.views",
         "description": "proyecto_libros.mi_app.views",
-        "peekOfCode": "def usuario_list(request):\n    return render(request, \"mi_app/usuario_list.html\")\ndef carrito_list(request):\n    return render(request, \"mi_app/carrito_list.html\")\n# Formularios\ndef libro_create(request):\n    if request.method == \"POST\":\n        libro_form = LibroForm(request.POST)\n        if libro_form.is_valid():\n            libro = Libro(",
+        "peekOfCode": "def usuario_list(request):\n    return render(request, \"mi_app/usuario_list.html\")\ndef carrito_list(request):\n    return render(request, \"mi_app/carrito_list.html\")\n########################################################################################\ndef create_order(request):\n    if request.method == 'POST':\n        existing_customer_form = ExistingCustomerForm(request.POST)\n        new_customer_form = CustomerForm(request.POST)\n        order_items_data = zip(request.POST.getlist('product'), request.POST.getlist('quantity'))",
         "detail": "proyecto_libros.mi_app.views",
         "documentation": {}
     },
@@ -308,25 +327,34 @@
         "kind": 2,
         "importPath": "proyecto_libros.mi_app.views",
         "description": "proyecto_libros.mi_app.views",
-        "peekOfCode": "def carrito_list(request):\n    return render(request, \"mi_app/carrito_list.html\")\n# Formularios\ndef libro_create(request):\n    if request.method == \"POST\":\n        libro_form = LibroForm(request.POST)\n        if libro_form.is_valid():\n            libro = Libro(\n                isbn=libro_form.cleaned_data['isbn'],\n                nombre=libro_form.cleaned_data['nombre'],",
+        "peekOfCode": "def carrito_list(request):\n    return render(request, \"mi_app/carrito_list.html\")\n########################################################################################\ndef create_order(request):\n    if request.method == 'POST':\n        existing_customer_form = ExistingCustomerForm(request.POST)\n        new_customer_form = CustomerForm(request.POST)\n        order_items_data = zip(request.POST.getlist('product'), request.POST.getlist('quantity'))\n        customer = None\n        if existing_customer_form.is_valid() and existing_customer_form.cleaned_data['customer']:",
         "detail": "proyecto_libros.mi_app.views",
         "documentation": {}
     },
     {
-        "label": "libro_create",
+        "label": "create_order",
         "kind": 2,
         "importPath": "proyecto_libros.mi_app.views",
         "description": "proyecto_libros.mi_app.views",
-        "peekOfCode": "def libro_create(request):\n    if request.method == \"POST\":\n        libro_form = LibroForm(request.POST)\n        if libro_form.is_valid():\n            libro = Libro(\n                isbn=libro_form.cleaned_data['isbn'],\n                nombre=libro_form.cleaned_data['nombre'],\n                genero=libro_form.cleaned_data['genero'],\n                autor=libro_form.cleaned_data['autor'],\n                precio=libro_form.cleaned_data['precio']",
+        "peekOfCode": "def create_order(request):\n    if request.method == 'POST':\n        existing_customer_form = ExistingCustomerForm(request.POST)\n        new_customer_form = CustomerForm(request.POST)\n        order_items_data = zip(request.POST.getlist('product'), request.POST.getlist('quantity'))\n        customer = None\n        if existing_customer_form.is_valid() and existing_customer_form.cleaned_data['customer']:\n            customer = existing_customer_form.cleaned_data['customer']\n        elif not existing_customer_form.cleaned_data['customer'] and new_customer_form.is_valid():\n            customer = new_customer_form.save()",
         "detail": "proyecto_libros.mi_app.views",
         "documentation": {}
     },
     {
-        "label": "buscar_libro",
+        "label": "order_confirmation",
         "kind": 2,
         "importPath": "proyecto_libros.mi_app.views",
         "description": "proyecto_libros.mi_app.views",
-        "peekOfCode": "def buscar_libro(request):\n    if request.method == \"POST\":\n        buscar_libro_form = BuscarLibro(request.POST)\n        if buscar_libro_form.is_valid():\n            isbn_search = buscar_libro_form.cleaned_data[\"isbn\"]            \n            libro = Libro.objects.get(isbn=isbn_search)\n            return render(request, \"mi_app/resultado_libro.html\", {\"libro\": libro})\n    else:\n        buscar_libro_form = BuscarLibro()\n    return render(request, \"mi_app/buscar-libro.html\", {\"buscar_libro_form\": buscar_libro_form})",
+        "peekOfCode": "def order_confirmation(request, order_id):\n    order = get_object_or_404(Order, id=order_id)\n    order_items = OrderItem.objects.filter(order=order)\n    return render(request, 'mi_app/order_confirmation.html', {\n        'order': order,\n        'order_items': order_items,\n    })\ndef query_order(request):\n    if request.method == 'POST':\n        form = OrderQueryForm(request.POST)",
+        "detail": "proyecto_libros.mi_app.views",
+        "documentation": {}
+    },
+    {
+        "label": "query_order",
+        "kind": 2,
+        "importPath": "proyecto_libros.mi_app.views",
+        "description": "proyecto_libros.mi_app.views",
+        "peekOfCode": "def query_order(request):\n    if request.method == 'POST':\n        form = OrderQueryForm(request.POST)\n        if form.is_valid():\n            order_number = form.cleaned_data['order_number']\n            order = get_object_or_404(Order, id=order_number)\n            order_items = OrderItem.objects.filter(order=order)\n            return render(request, 'mi_app/order_detail.html', {\n                'order': order,\n                'order_items': order_items,",
         "detail": "proyecto_libros.mi_app.views",
         "documentation": {}
     },

@@ -10,7 +10,7 @@
         <h1>Lista de Libros</h1>
         <ul>
             {% for libro in libros %}
-                <li>{{ libro.isbn }} -{{ libro.nombre }} - {{ libro.autor }} - ${{ libro.precio }}</li>
+                <li>{{ libro.isbn }} -{{ libro.title }} - {{ libro.author }} - ${{ libro.price }}</li>
             {% endfor %}
         </ul>
     </section>

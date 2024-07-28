@@ -9,7 +9,10 @@ def inicio(request):
 def libro_list(request):
     libros = Product.objects.all()
     return render(request, "mi_app/libro_list.html", {'libros': libros})
-    # return render(request, "mi_app/libro_list.html")
+
+
+
+
 
 def usuario_list(request):
     return render(request, "mi_app/usuario_list.html")
@@ -28,7 +31,7 @@ def create_order(request):
         customer = None
         if existing_customer_form.is_valid() and existing_customer_form.cleaned_data['customer']:
             customer = existing_customer_form.cleaned_data['customer']
-        elif new_customer_form.is_valid():
+        elif not existing_customer_form.cleaned_data['customer'] and new_customer_form.is_valid():
             customer = new_customer_form.save()
         
         if customer:
@@ -36,7 +39,7 @@ def create_order(request):
             for product_id, quantity in order_items_data:
                 product = Product.objects.get(id=product_id)
                 OrderItem.objects.create(order=order, product=product, quantity=quantity)
-            return redirect('mi_app/order_confirmation', order_id=order.id)
+            return redirect('order_confirmation', order_id=order.id)
         else:
             return render(request, 'mi_app/create_order.html', {
                 'existing_customer_form': existing_customer_form,
@@ -59,6 +62,7 @@ def create_order(request):
         'order_item_forms': order_item_forms,
         'products': products,
     })
+
 
 def order_confirmation(request, order_id):
     order = get_object_or_404(Order, id=order_id)

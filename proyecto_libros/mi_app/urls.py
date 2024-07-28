@@ -4,8 +4,6 @@ from mi_app import views
 urlpatterns = [
     path('', views.inicio, name="Inicio"),
     path('libros/', views.libro_list, name="Libros"),
-    path('usuarios/', views.usuario_list, name='Usuario'),
-    path('carritos/', views.carrito_list, name='Carrito'),
 ]
 
 formularios = [
