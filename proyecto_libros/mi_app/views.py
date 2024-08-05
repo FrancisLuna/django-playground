@@ -77,12 +77,24 @@ def query_order(request):
         form = OrderQueryForm(request.POST)
         if form.is_valid():
             order_number = form.cleaned_data['order_number']
-            order = get_object_or_404(Order, id=order_number)
-            order_items = OrderItem.objects.filter(order=order)
-            return render(request, 'mi_app/order_detail.html', {
-                'order': order,
-                'order_items': order_items,
-            })
+            try:
+                order = get_object_or_404(Order, id=order_number)
+                order_items = OrderItem.objects.filter(order=order)
+                if order_items.exists():
+                    return render(request, 'mi_app/order_detail.html', {
+                        'order': order,
+                        'order_items': order_items,
+                    })
+                else:
+                    return render(request, 'mi_app/query_order.html', {
+                        'form': form,
+                        'error': "No se encontró la orden con el número ingresado.",
+                    })
+            except:
+                return render(request, 'mi_app/query_order.html', {
+                    'form': form,
+                    'error': "No se encontró el pedido.",
+                })
     else:
         form = OrderQueryForm()
 

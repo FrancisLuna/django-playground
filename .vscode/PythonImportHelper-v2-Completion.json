@@ -354,7 +354,7 @@
         "kind": 2,
         "importPath": "proyecto_libros.mi_app.views",
         "description": "proyecto_libros.mi_app.views",
-        "peekOfCode": "def query_order(request):\n    if request.method == 'POST':\n        form = OrderQueryForm(request.POST)\n        if form.is_valid():\n            order_number = form.cleaned_data['order_number']\n            order = get_object_or_404(Order, id=order_number)\n            order_items = OrderItem.objects.filter(order=order)\n            return render(request, 'mi_app/order_detail.html', {\n                'order': order,\n                'order_items': order_items,",
+        "peekOfCode": "def query_order(request):\n    if request.method == 'POST':\n        form = OrderQueryForm(request.POST)\n        if form.is_valid():\n            order_number = form.cleaned_data['order_number']\n            try:\n                order = get_object_or_404(Order, id=order_number)\n                order_items = OrderItem.objects.filter(order=order)\n                if order_items.exists():\n                    return render(request, 'mi_app/order_detail.html', {",
         "detail": "proyecto_libros.mi_app.views",
         "documentation": {}
     },
